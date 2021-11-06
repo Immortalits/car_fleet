@@ -1,0 +1,7 @@
+venv
+.mypy_cache
+__pycache__
+*.sqlite
+.flaskenv
+
+pip freeze > requirements.txt
