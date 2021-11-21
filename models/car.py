@@ -11,16 +11,30 @@ class CarModel(BaseModel):
     driver_id = db.Column(db.Integer, db.ForeignKey('drivers.id'), unique=True)
     driver = db.relationship('DriverModel', back_populates='car')
 
+    # https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#one-to-many
+    positions = db.relationship('PositionModel', back_populates='car')
+
+    # many to many
+    # https://docs.sqlalchemy.org/en/14/orm/basic_relationships.html#many-to-many
+    fleets = db.relationship('CarFleetLink', back_populates='car')
+
     def __init__(self, plate, type):
         self.license_plate = plate
         self.type = type
 
-    def json(self):
+    def json(self, use_fleets=True):
         car_json = {
             'license_plate': self.license_plate,
             'type': self.type,
-            'id': self.id
+            'id': self.id,
+            'driver': '' if self.driver is None else self.driver.name,
         }
+        if use_fleets:
+            fleets = []
+            for link in self.fleets:
+                if link.fleet is not None:
+                    fleets.append(link.fleet.json(use_cars=False))
+            car_json['fleets'] = fleets
         return car_json
 
     def save_to_db(self):

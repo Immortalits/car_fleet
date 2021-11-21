@@ -1,4 +1,5 @@
 from flask_restful import Resource, reqparse
+from sqlalchemy.orm import query
 from models.driver import DriverModel
 
 
@@ -17,8 +18,8 @@ class Driver(Resource):
         return {"message": "Driver created successfully."}, 201
 
     def get(self):
-        data = DriverModel.query.filter_by()
-        print(data)
+        # query = DriverModel.query.filter_by()
+        # print(query)
         return {
             "drivers": [driver.json() for driver in DriverModel.query.all()]
         }
