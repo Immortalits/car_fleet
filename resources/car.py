@@ -34,7 +34,7 @@ class Car(Resource):
 
     @jwt_required()
     def get(self, plate):
-        car = CarModel.find_by_plate(plate)
+        car = CarModel.find_by_attribute(plate=plate)
         if car:
             return car.json()
         return {'message': 'car not found'}, 404

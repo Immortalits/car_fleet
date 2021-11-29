@@ -1,7 +1,8 @@
 from db import BaseModel, db
+from models.model_mixin import MixinModel
 
 
-class UserModel(BaseModel):
+class UserModel(BaseModel, MixinModel):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -11,11 +12,3 @@ class UserModel(BaseModel):
     def __init__(self, username, password):
         self.username = username
         self.password = password
-
-    @classmethod
-    def find_by_username(cls, username):
-        return cls.query.filter_by(username=username).first()
-
-    @classmethod
-    def find_by_id(cls, _id):
-        return cls.query.filter_by(id=_id).first()
