@@ -33,9 +33,19 @@ class CarPosition(Resource):
                 return {
                     'message': "Errod during database communication..."
                 }, 400
-            return {'message': "Position saved succesfully!"}, 201
+            return {"message": "Position saved succesfully!"}, 201
         else:
-            return {'message': f'This plate ({plate}) does not exist!'}, 404
+            return {"message": f'This plate does not exist: {plate}'}, 404
 
     def get(self, plate):
-        pass
+        if CarModel.find_by_attribute(license_plate=plate):
+            data = CarPosition.parser.parse_args(
+            )  # A datába bekerül az összes bodyban lévő adat.
+            car_position = PositionModel(data["latitude"], data["longitude"])
+            car_position.car_id = CarModel.find_by_attribute(
+                license_plate=plate
+            ).id  # Lekérem a rendszámhoz tartozó autó id-ját.
+
+            return {"positions": car_position.json()}
+        else:
+            return {"message": f'This plate does not exist: {plate}'}, 404

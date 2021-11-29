@@ -23,13 +23,13 @@ class PositionModel(BaseModel, MixinModel):
         car_pos = {
             "latitude": self.latitude,
             "longitude": self.longitude,
-            "date": self.date.isoformat()
+            "date": self.date
         }
         positions = []
         for pos in PositionModel.query.filter_by(car_id=self.car_id).all():
             car_pos["latitude"] = pos.latitude
             car_pos["longitude"] = pos.longitude
-            car_pos["date"] = ""
+            car_pos["date"] = pos.date.isoformat()
 
             positions.append(car_pos)
 
