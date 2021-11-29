@@ -5,6 +5,7 @@ from flask_jwt import JWT
 
 from resources.assign import AssignDriverToCar
 from resources.car import Car, CarList
+from resources.car_position import CarPosition
 from resources.driver import Driver
 from resources.user import UserRegister
 from security import authenticate, identity
@@ -41,6 +42,7 @@ api.add_resource(AssignDriverToCar, '/assign')
 api.add_resource(Fleet, '/fleet/<string:name>')
 api.add_resource(FleetList, '/fleets')
 api.add_resource(CarFleet, '/car_fleet')
+api.add_resource(CarPosition, '/car/<string:plate>/position')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
