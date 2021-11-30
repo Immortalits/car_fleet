@@ -1,4 +1,5 @@
 from flask_restful import Resource, reqparse
+from sqlalchemy.sql.type_api import adapt_type
 from models.position import PositionModel
 from models.car import CarModel
 from flask_jwt import jwt_required
@@ -26,6 +27,9 @@ class CarPosition(Resource):
                 license_plate=plate
             ).id  # Lekérem a rendszámhoz tartozó autó id-ját.
             car_position.date = datetime.now()
+
+            car_position.address = car_position.resolve_address(
+                data["latitude"], data["longitude"])
 
             try:
                 car_position.save_to_db()
